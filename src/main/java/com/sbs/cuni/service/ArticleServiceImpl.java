@@ -203,4 +203,9 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.getBoard(id);
 	}
 
+	@Override
+	public void hitUp(long id) {
+		articleDao.hitUp(id);	
+	}
+
 }
