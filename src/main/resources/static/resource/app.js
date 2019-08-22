@@ -123,6 +123,7 @@ function Article__disableReplyEditMode(el) {
 
 function Article__drawReply(reply) {
 	var 번호 = reply.id;
+	var 작성자 = reply.extra.replyWriter;
 	var 등록날짜 = reply.regDate;
 	var 댓글번호 = reply.id;
 	var 회원번호 = reply.memberId;
@@ -152,21 +153,25 @@ function Article__drawReply(reply) {
 	var 내용 = $내용.html();
 	
 	var 비고 = `
-	<div class="editable-item">
-		<a class="read-mode-visible" href="javascript:;" onclick='Article__enableReplyEditMode(this)'>수정</a>
-		<a class="btn-delete" href="javascript:;" onclick="Article__doDeleteReply(this);">삭제</a>
+	<div>
+		<a class="editable-item read-mode-visible" href="javascript:;" onclick='Article__enableReplyEditMode(this)'>수정</a>
+		<a class="deletable-item btn-delete" href="javascript:;" onclick="Article__doDeleteReply(this);">삭제</a>
 	</div>
 	`;
 	
 	var editableClass = '';
 	
-	if ( 회원번호 == loginedMemberId ) {
-		editableClass = 'editable';
+	if ( 회원번호 == loginedMemberId) {
+		editableClass = 'editable deletable';
+	}
+	else if (permissionPerson == 1) {
+		editableClass = 'deletable';
 	}
 	
 	var html = `
 	<tr data-id="${번호}" data-member-id="${회원번호}" class="${editableClass} add-animation-item add-animation-item-just-added">
         <td>${댓글번호}</td>
+        <td>${작성자}</td>
    		<td>${등록날짜}</td>
    		<td>${내용}</td>
    		<td>${비고}</td>

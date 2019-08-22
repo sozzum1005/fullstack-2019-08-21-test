@@ -7,6 +7,7 @@
 <%@ include file="../part/head.jspf"%>
 <script>
 	var articleId = parseInt('${param.id}');
+	var loginedMemberId = ${loginedMemberId};
 </script>
 
 <script>
@@ -21,15 +22,31 @@
 		var $tr = $el.closest('tr');
 		$tr.removeClass('edit-mode');
 	}
+
+	var permissionPerson =  ${loginedMember.permissionLevel > 0 ? loginedMember.permissionLevel : 0};
+	
 </script>
 
 <style>
+
+.deletable-item {
+	display: none;
+}
+
+.deletable .deletable-item {
+	display: block;
+}
+
 .editable-item {
 	display: none;
 }
 
 .editable .editable-item {
 	display: block;
+}
+
+.editable a.editable-item, .deletable a.deletable-item {
+	display: inline-block;
 }
 
 .article-replies-list tr .edit-mode-visible {
@@ -55,6 +72,10 @@
 			<tr>
 				<th>ID</th>
 				<td><c:out value="${article.id}" /></td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td><c:out value="${article.extra.articleWriter}" /></td>
 			</tr>
 			<tr>
 				<th>날짜</th>
@@ -100,15 +121,17 @@
 <div class="list-1 table-common con article-replies-list">
 	<table>
 		<colgroup>
-			<col width="80">
+			<col width="50">
+			<col width="70">
+			<col width="100">
 			<col width="180">
-			<col>
-			<col width="120">
+			<col width="80">
 		</colgroup>
 
 		<thead>
 			<tr>
 				<th>ID</th>
+				<th>작성자</th>
 				<th>등록날짜</th>
 				<th>내용</th>
 				<th>비고</th>
